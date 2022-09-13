@@ -3,8 +3,10 @@ package AddressBook;
 import java.util.*;
 
 public class AddressBook {
+
     Scanner sc = new Scanner(System.in);
     ArrayList<PersonInfo> list = new ArrayList<>();
+    Map<String, ArrayList<PersonInfo>> map = new HashMap<>();
 
     void addContact() {
 
@@ -48,8 +50,13 @@ public class AddressBook {
         System.out.println(personInfo);
         System.out.println("Contact Added Successfully");
     }
-}
-    
- 
 
+    void displayContact() {
+        System.out.println("------------------------------------------");
+        for (PersonInfo display : list) {
+            System.out.println(display);
+        }
+        System.out.println("------------------------------------------");
+    }
+}
     

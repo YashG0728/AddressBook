@@ -1,5 +1,6 @@
 package AddressBook;
 
+
 class PersonInfo {
     public String firstName, lastName, address, city, state, emailID, zip, phoneNumber;
 
