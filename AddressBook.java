@@ -147,4 +147,14 @@ public class AddressBook {
         System.out.println(addressBookName);
         System.out.println("------------------------------------------");
     }
+
+    void displayAddressBook() {
+        System.out.println("------------------------------------------");
+        for (Map.Entry<String, ArrayList<PersonInfo>> displayBook : map.entrySet()) {
+            System.out.println(displayBook.getKey());  // name  //String key = displayBook.getKey();
+            System.out.println(displayBook.getValue()); // data //ArrayList<PersonInfo> value = displayBook.getValue();
+        }
+        System.out.println("------------------------------------------");
+    }
 }
+

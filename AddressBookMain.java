@@ -11,10 +11,11 @@ public class AddressBookMain {
         boolean exit = true;
         while (exit) {
             System.out.print(" 1.ADD NEW ADDRESS BOOK ");
-            System.out.print(" 2.ADD PERSON DETAILS ");
-            System.out.print(" 3.DISPLAY CONTACT");
-            System.out.print(" 4.DELETE CONTACT");
-            System.out.println(" 5.EDIT DETAILS");
+            System.out.println("2.DISPLAY ADDRESS BOOK");
+            System.out.print(" 3.ADD PERSON DETAILS ");
+            System.out.print(" 4.DISPLAY CONTACT");
+            System.out.print(" 5.DELETE CONTACT");
+            System.out.println(" 6.EDIT DETAILS");
             System.out.println(" 0.EXIT ");
             System.out.print("->");
             int choice = sc.nextInt();
@@ -23,16 +24,19 @@ public class AddressBookMain {
                 case 1: //addAddressBook
                     addressBook.newAddressBook();
                     break;
-                case 2: //For add contact
+                case 2: //addAddressBook
+                    addressBook.displayAddressBook();
+                    break;
+                case 3: //For add contact
                     addressBook.addContact();
                     break;
-                case 3: //For display contacts
+                case 4: //For display contacts
                     addressBook.displayContact();
                     break;
-                case 4: //For Edit
+                case 5: //For Edit
                     addressBook.editContact();
                     break;
-                case 5: //For deleting
+                case 6: //For deleting
                     addressBook.deleteContact();
                     break;
                 case 0:
