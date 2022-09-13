@@ -1,10 +1,18 @@
 package AddressBook;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import static java.util.stream.Collectors.counting;
+import static java.util.stream.Collectors.groupingBy;
+
 
 public class AddressBook {
+    public int flag = 0;
     Scanner sc = new Scanner(System.in);
     ArrayList<PersonInfo> list;
+    Map<String, List<PersonInfo>> maps;
+    Map<String, Long> countMap;
     Map<String, ArrayList<PersonInfo>> map = new HashMap<>();
 
     void addContact() {
@@ -13,9 +21,15 @@ public class AddressBook {
 
         System.out.println("Enter FirstName : ");
         String firstName = sc.nextLine();
+         List<PersonInfo> distinctPeople = list.stream()
+                 .filter((p -> (p.getFirstName().equals(firstName))))
+                 .collect(Collectors.toList());
+         System.out.println(distinctPeople);
+
 
         System.out.println("Enter lastName : ");
         String lastName = sc.nextLine();
+
 
         System.out.println("Enter address : ");
         String address = sc.nextLine();
@@ -46,11 +60,8 @@ public class AddressBook {
 
 
         list.add(personInfo);
-        System.out.println("------------------------------------------");
         System.out.println(personInfo);
-        System.out.println("------------------------------------------");
         System.out.println("Contact Added Successfully");
-        System.out.println("------------------------------------------");
     }
 
     void displayContact() {
@@ -61,100 +72,133 @@ public class AddressBook {
         System.out.println("------------------------------------------");
     }
 
-    void editContact() {
-        System.out.println("Enter first name to check : ");
-        String checkFirstName = sc.nextLine();
-        for (PersonInfo personInfo : list) {
-            if (personInfo.getFirstName().equals(checkFirstName)) {
-
-                System.out.println("Edit First Name : ");
-                String firstName = sc.nextLine();
-                personInfo.setFirstName(firstName);
-
-                System.out.println("Edit Last Name : ");
-                String lastName = sc.nextLine();
-                personInfo.setLastName(lastName);
-
-                System.out.println("Edit Address Name : ");
-                String address = sc.nextLine();
-                personInfo.setAddress(address);
-
-                System.out.println("Edit city Name : ");
-                String city = sc.nextLine();
-                personInfo.setCity(city);
-
-                System.out.println("Edit state Name : ");
-                String state = sc.nextLine();
-                personInfo.setState(state);
-
-                System.out.println("Edit phoneNumber Name : ");
-                String phoneNumber = sc.nextLine();
-                personInfo.setPhoneNumber(phoneNumber);
-
-                System.out.println("Edit email Name : ");
-                String emailId = sc.nextLine();
-                personInfo.setEmailID(emailId);
-
-                System.out.println("Edit Zip Name : ");
-                String zip = sc.nextLine();
-                personInfo.setZip(zip);
-
-                System.out.println("------------------------------------------");
-                System.out.println(personInfo);
-                System.out.println("------------------------------------------");
-                System.out.println("DETAILS EDITED SUCCESSFULLY");
-                System.out.println("------------------------------------------");
-            } else {
-                System.out.println("------------------------------------------");
-                System.out.println("RECORD NOT FOUND...!!!PLEASE ENTER VALID DETAILS");
-                System.out.println("------------------------------------------");
-                editContact();
-            }
-        }
-    }
     void deleteContact() {
         System.out.println("Enter First Name to delete : ");
         String deleteName = sc.nextLine();
+        System.out.println("------------------------------------------");
         for (PersonInfo personInfo : list) {
             if (personInfo.getFirstName().equals(deleteName)) {
                 list.remove(personInfo);
-                System.out.println("------------------------------------------");
-                System.out.println("RECORD DELETED SUCCESSFULLY...!!! ");
-                System.out.println("------------------------------------------");
-                break;
-            }else{
-                System.out.println("------------------------------------------");
-                System.out.println("RECORD NOT FOUND...!!!");
+                System.out.println("Record is deleted Successfully...!");
                 System.out.println("------------------------------------------");
                 break;
             }
         }
     }
+
+    void editContact(String editName) {
+//        boolean found = false;
+        //ContactDeatails contactDetails = list.stream().filter(i -> i.firstName.equals(editName)).findFirst().get();
+        for (PersonInfo personInfo : list) {
+            if (personInfo.getFirstName().equals(editName)) {
+
+                System.out.println("Edit First Name : ");
+                String firstName = sc.nextLine();
+
+                System.out.println("Edit Last Name ; ");
+                String lastName = sc.nextLine();
+
+                System.out.println("Edit Address Name ; ");
+                String address = sc.nextLine();
+
+                System.out.println("Edit city Name ; ");
+                String city = sc.nextLine();
+
+                System.out.println("Edit state Name ; ");
+                String state = sc.nextLine();
+
+                System.out.println("Edit email Name ; ");
+                String emailId = sc.nextLine();
+
+                System.out.println("Edit Zip Name ; ");
+                String zip = sc.nextLine();
+
+                System.out.println("Edit phoneNumber Name ; ");
+                String phoneNumber = sc.nextLine();
+
+                personInfo.setFirstName(firstName);
+                personInfo.setLastName(lastName);
+                personInfo.setAddress(address);
+                personInfo.setCity(city);
+                personInfo.setState(state);
+                personInfo.setEmailID(emailId);
+                personInfo.setZip(zip);
+                personInfo.setPhoneNumber(phoneNumber);
+                System.out.println(personInfo);
+                flag++;
+            }
+        }
+    }
+
     void newAddressBook() {
         System.out.println("Enter Name Of Address Book : ");
         String addressBookName = sc.nextLine().toUpperCase();
+        System.out.println("------------------------------------------");
         if (map.containsKey(addressBookName)) {
-            System.out.println("------------------------------------------");
             System.out.println("AddressBook Already Exists");
-            System.out.println("------------------------------------------");
             list = map.get(addressBookName);
             newAddressBook();
             return;
         }
         list = new ArrayList<>();
         map.put(addressBookName, list);
-        System.out.println("------------------------------------------");
         System.out.println(addressBookName);
+
         System.out.println("------------------------------------------");
     }
 
     void displayAddressBook() {
         System.out.println("------------------------------------------");
         for (Map.Entry<String, ArrayList<PersonInfo>> displayBook : map.entrySet()) {
-            System.out.println(displayBook.getKey());  // name  //String key = displayBook.getKey();
-            System.out.println(displayBook.getValue()); // data //ArrayList<PersonInfo> value = displayBook.getValue();
+            System.out.println(displayBook.getKey());  // name
+            //String key = displayBook.getKey();
+            System.out.println(displayBook.getValue()); // data
+            //ArrayList<PersonInfo> value = displayBook.getValue();
         }
         System.out.println("------------------------------------------");
     }
-}
+
+    void editAddressBook() {
+//        for(Map.Entry<String, ArrayList<PersonInfo>> entry : map.entrySet()){
+//           String key = entry.getKey();
+//            list = map.get(key);
+//            editContact();
+        flag = 0;
+        System.out.println("Enter First Name to update : ");
+        String editName = sc.nextLine();
+        for (Map.Entry<String, ArrayList<PersonInfo>> entry : map.entrySet()) {
+            list = entry.getValue();
+            editContact(editName);
+        }
+        if (flag == 0) {
+            System.out.println("Record Not Found");
+
+        }
+    }
+
+
+    public void searchCity() {
+        System.out.println("Enter City Name To Search Function : ");
+        String citySearch = sc.nextLine();
+        map.keySet().forEach(key -> map.get(key).stream()
+                .filter(i -> i.city.equals(citySearch))
+                .collect(Collectors.toList()).stream()
+                .forEach(i -> System.out.println(i.toString())));
+        flag++;
+        System.out.println("NumberOfPersonsInCity->"+"["+flag+"]");
+    }
+
+    public void searchState() {
+        System.out.println("Enter State Name To Search Function : ");
+        String stateSearch = sc.nextLine();
+        map.keySet().forEach(key -> map.get(key).stream()
+                .filter(i -> i.state.equals(stateSearch))
+                .collect(Collectors.toList())
+                .forEach(i -> System.out.println(i.toString())));
+        flag++;
+        System.out.println("NumberOfPersonsInState->"+"["+flag+"]");
+
+    }
+  }
+
 
