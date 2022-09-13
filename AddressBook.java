@@ -4,7 +4,7 @@ import java.util.*;
 
 public class AddressBook {
     Scanner sc = new Scanner(System.in);
-    ArrayList<PersonInfo> list = new ArrayList<>();
+    ArrayList<PersonInfo> list;
     Map<String, ArrayList<PersonInfo>> map = new HashMap<>();
 
     void addContact() {
@@ -13,7 +13,7 @@ public class AddressBook {
 
         System.out.println("Enter FirstName : ");
         String firstName = sc.nextLine();
-     
+
         System.out.println("Enter lastName : ");
         String lastName = sc.nextLine();
 
@@ -60,6 +60,7 @@ public class AddressBook {
         }
         System.out.println("------------------------------------------");
     }
+
     void editContact() {
         System.out.println("Enter first name to check : ");
         String checkFirstName = sc.nextLine();
@@ -118,7 +119,7 @@ public class AddressBook {
             if (personInfo.getFirstName().equals(deleteName)) {
                 list.remove(personInfo);
                 System.out.println("------------------------------------------");
-                System.out.println("Record is deleted Successfully...!");
+                System.out.println("RECORD DELETED SUCCESSFULLY...!!! ");
                 System.out.println("------------------------------------------");
                 break;
             }else{
@@ -129,14 +130,21 @@ public class AddressBook {
             }
         }
     }
+    void newAddressBook() {
+        System.out.println("Enter Name Of Address Book : ");
+        String addressBookName = sc.nextLine().toUpperCase();
+        if (map.containsKey(addressBookName)) {
+            System.out.println("------------------------------------------");
+            System.out.println("AddressBook Already Exists");
+            System.out.println("------------------------------------------");
+            list = map.get(addressBookName);
+            newAddressBook();
+            return;
+        }
+        list = new ArrayList<>();
+        map.put(addressBookName, list);
+        System.out.println("------------------------------------------");
+        System.out.println(addressBookName);
+        System.out.println("------------------------------------------");
+    }
 }
-
-
-
-
-
-
-
-
-
-
