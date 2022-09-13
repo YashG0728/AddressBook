@@ -55,7 +55,10 @@ public class AddressBookMain {
                     break;
                 case 10: //View all persons in same state
                     addressBook.viewByState();
-                    break;              
+                    break;
+                case 11:
+                    addressBook.countByCity();
+                    break;
                 case 0:
                     exit = false;
                     break;

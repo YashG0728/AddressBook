@@ -225,6 +225,16 @@ public class AddressBook {
         maps.forEach(((key, value) -> System.out.println("NumberOfPersonInState"+"-->>"+ value.size()+"{" + key.toUpperCase() + "}" + "->" + value + "<-")));
     }
 
+    public void countByCity() {
+        countMap = new HashMap<>();
+        map.keySet().stream().flatMap(y -> map.get(y).stream()
+                .collect(groupingBy(PersonInfo::getCity,counting())).entrySet().stream()).forEach(entry -> {
+            String key = entry.getKey();
+            Long value = entry.getValue();
+            countMap.merge(key, value,Long::sum);
+        });
+        countMap.forEach(((key, value) -> System.out.println("{" + key.toUpperCase() + "}" + "->" + value + "<-")));
+    }
 }
 
 
