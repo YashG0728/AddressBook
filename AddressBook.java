@@ -199,6 +199,32 @@ public class AddressBook {
         System.out.println("NumberOfPersonsInState->"+"["+flag+"]");
 
     }
-  }
+    public void viewByCity() {
+        maps = new HashMap<>();
+        for (String y : map.keySet()) {
+            for (Map.Entry<String, List<PersonInfo>> entry : map.get(y).stream()
+                    .collect(groupingBy(PersonInfo::getCity)).entrySet()) {
+                String key = entry.getKey();
+                List<PersonInfo> value = entry.getValue();
+                maps.merge(key, value, (city, person) -> Stream.concat(city.stream(), person.stream()).toList());
+            }
+        }
+        maps.forEach(((key, value) -> System.out.println("NumberOfPersonInCity"+"-->>"+ value.size()+"{" + key.toUpperCase() + "}" + "->" + value + "<-")));
+    }
+
+    public void viewByState() {
+        maps = new HashMap<>();
+        for (String y : map.keySet()) {
+            for (Map.Entry<String, List<PersonInfo>> entry : map.get(y).stream()
+                    .collect(groupingBy(PersonInfo::getState)).entrySet()) {
+                String key = entry.getKey();
+                List<PersonInfo> value = entry.getValue();
+                maps.merge(key, value, (state, person) -> Stream.concat(state.stream(), person.stream()).toList());
+            }
+        }
+        maps.forEach(((key, value) -> System.out.println("NumberOfPersonInState"+"-->>"+ value.size()+"{" + key.toUpperCase() + "}" + "->" + value + "<-")));
+    }
+
+}
 
 

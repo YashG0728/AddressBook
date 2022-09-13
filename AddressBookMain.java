@@ -49,7 +49,13 @@ public class AddressBookMain {
                     break;
                 case 8://Search by state
                     addressBook.searchState();
-                    break;             
+                    break;
+                case 9: //View all persons in same city
+                    addressBook.viewByCity();
+                    break;
+                case 10: //View all persons in same state
+                    addressBook.viewByState();
+                    break;              
                 case 0:
                     exit = false;
                     break;
