@@ -12,6 +12,7 @@ public class AddressBookMain {
         while (exit) {
             System.out.print(" 1.ADD PERSON DETAILS ");
             System.out.print(" 2.DISPLAY CONTACT");
+            System.out.println(" 3.EDIT DETAILS");
             System.out.println(" 0.EXIT ");
             System.out.print("->");
             int choice = sc.nextInt();
@@ -22,6 +23,9 @@ public class AddressBookMain {
                     break;
                 case 2: //For display contacts
                     addressBook.displayContact();
+                    break;        
+                case 3://Edit details from book
+                    addressBook.editContact();
                     break;
                 case 0:
                     exit = false;
