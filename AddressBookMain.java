@@ -22,7 +22,8 @@ public class AddressBookMain {
             System.out.print(" 10.SORT BY PERSON NAME ");
             System.out.print(" 11.SORT BY CITY ");
             System.out.print(" 12.SORT BY STATE ");
-            System.out.print(" 13.READ FILE USING FILE IO ");            
+            System.out.print(" 13.READ FILE USING FILE IO ");
+            System.out.print(" 14.WRITE FILE USING CSV ");
             System.out.println(" 0.EXIT ");
             System.out.print("->");
             int choice = sc.nextInt();
@@ -66,7 +67,10 @@ public class AddressBookMain {
                     break;
                 case 13: //Read data from File IO
                     addressBook.ReadFileIO();
-                    break;               
+                    break;
+                case 14: //Read data from csv
+                    addressBook.readCSV();
+                    break;
                 case 0:
                     exit = false;
                     break;
