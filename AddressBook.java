@@ -303,6 +303,12 @@ public class AddressBook {
                 .forEach(System.out::println);
     }
 
+    public void sortByCity() {
+        list.stream()
+                .sorted(Comparator.comparing((PersonInfo contact) -> contact.getCity()))
+                .forEach(System.out::println);
+    }
+
     public void sortByPersonNameInBooks() {
         viewMap = new HashMap<>();
         map.keySet().forEach(i -> map.get(i).stream().collect(groupingBy(PersonInfo::getFirstName))
@@ -312,7 +318,39 @@ public class AddressBook {
                 })));
         viewMap.entrySet().stream().sorted(Map.Entry.comparingByKey()).forEach(System.out::println);
 
+    
+	}
     }
 
+    public void writeFileIO() {
+        StringBuilder buffer = new StringBuilder("");
+        map.keySet().forEach(key -> map.get(key).forEach(c -> buffer.append(c.toString().concat("\n"))));
+        try {
+            Path path = Paths.get("./addressBook.txt");
+            Files.write(path, buffer.toString().getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void ReadFileIO() {
+        try {
+            Path path = Paths.get("./addressBook.txt");
+            List<String> lines = Files.readAllLines(path);
+            lines.forEach(System.out::println);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Data Added In File Successfully!!!");
+    }
+    public void writeCSV() throws FileNotFoundException {
+        File csvFile = new File("src\\AddressBook.csv");
+        PrintWriter out = new PrintWriter(csvFile);
+
+        for(PersonInfo person : list)
+        {
+            System.out.println(person.getFirstName());
+        }
+        out.close();
+    }
 }
-  

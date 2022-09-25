@@ -20,7 +20,9 @@ public class AddressBookMain {
             System.out.print(" 8.VIEW BY STATE ");
             System.out.print(" 9.COUNT BY CITY ");
             System.out.print(" 10.SORT BY PERSON NAME ");
-            System.out.print(" 11.SORT BY PERSON NAME IN BOOKS ");          
+            System.out.print(" 11.SORT BY CITY ");
+            System.out.print(" 12.SORT BY STATE ");
+            System.out.print(" 13.READ FILE USING FILE IO ");            
             System.out.println(" 0.EXIT ");
             System.out.print("->");
             int choice = sc.nextInt();
@@ -56,9 +58,15 @@ public class AddressBookMain {
                 case 10: //Sort by person name
                     addressBook.sortByPersonName();
                     break;
-                case 11: //Sort person by name in multiple address book
+                case 11: //Sort by city
+                    addressBook.sortByCity();
+                    break;
+                case 12: //Sort person by name in multiple address book
                     addressBook.sortByPersonNameInBooks();
-                    break;             
+                    break;
+                case 13: //Read data from File IO
+                    addressBook.ReadFileIO();
+                    break;               
                 case 0:
                     exit = false;
                     break;
