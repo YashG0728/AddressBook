@@ -1,35 +1,37 @@
 package AddressBook;
 
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import static java.util.stream.Collectors.counting;
-import static java.util.stream.Collectors.groupingBy;
 
+import static java.util.stream.Collectors.*;
 
 public class AddressBook {
     public int flag = 0;
     Scanner sc = new Scanner(System.in);
     ArrayList<PersonInfo> list;
     Map<String, List<PersonInfo>> maps;
+    Map<String, List<PersonInfo>> viewMap;
     Map<String, Long> countMap;
     Map<String, ArrayList<PersonInfo>> map = new HashMap<>();
 
     void addContact() {
-
         PersonInfo personInfo = new PersonInfo();
 
         System.out.println("Enter FirstName : ");
         String firstName = sc.nextLine();
-         List<PersonInfo> distinctPeople = list.stream()
-                 .filter((p -> (p.getFirstName().equals(firstName))))
-                 .collect(Collectors.toList());
-         System.out.println(distinctPeople);
-
 
         System.out.println("Enter lastName : ");
         String lastName = sc.nextLine();
 
+        if (duplicateCheck(firstName + lastName)) {
+            System.out.println("GIVEN NAME IS ALREADY EXISTS");
+            return;
+        }
 
         System.out.println("Enter address : ");
         String address = sc.nextLine();
@@ -60,8 +62,10 @@ public class AddressBook {
 
 
         list.add(personInfo);
+        System.out.println("------------------------------------------");
         System.out.println(personInfo);
         System.out.println("Contact Added Successfully");
+        System.out.println("------------------------------------------");
     }
 
     void displayContact() {
@@ -87,8 +91,6 @@ public class AddressBook {
     }
 
     void editContact(String editName) {
-//        boolean found = false;
-        //ContactDeatails contactDetails = list.stream().filter(i -> i.firstName.equals(editName)).findFirst().get();
         for (PersonInfo personInfo : list) {
             if (personInfo.getFirstName().equals(editName)) {
 
@@ -98,6 +100,10 @@ public class AddressBook {
                 System.out.println("Edit Last Name ; ");
                 String lastName = sc.nextLine();
 
+                if (duplicateCheck(firstName + lastName)) {
+                    System.out.println("GIVEN NAME IS ALREADY EXISTS");
+                    return;
+                }
                 System.out.println("Edit Address Name ; ");
                 String address = sc.nextLine();
 
@@ -136,15 +142,70 @@ public class AddressBook {
         System.out.println("------------------------------------------");
         if (map.containsKey(addressBookName)) {
             System.out.println("AddressBook Already Exists");
-            list = map.get(addressBookName);
-            newAddressBook();
             return;
         }
         list = new ArrayList<>();
         map.put(addressBookName, list);
         System.out.println(addressBookName);
+        operationInBook();
 
         System.out.println("------------------------------------------");
+    }
+
+    public void openAddressBook() {
+        System.out.println("AddressBooks : " + map.keySet());
+        if (map.isEmpty()) {
+            System.out.println("There Is No AddressBook Available");
+        } else {
+            System.out.println("Enter The Name Of Old AddressBook You Want To Open : ");
+            String addBookDetails = sc.nextLine().toUpperCase();
+            if (map.containsKey(addBookDetails)) {
+                list = map.get(addBookDetails);
+                operationInBook();
+            } else {
+                System.out.println("AddressBook Doesn't Exists!");
+            }
+        }
+    }
+
+    private void operationInBook() {
+        boolean exit = true;
+        while (exit) {
+            System.out.print(" 1.ADD PERSON DETAILS ");
+            System.out.print(" 2.EDIT PERSON DETAILS");
+            System.out.print(" 3.DELETE PERSON DETAILS ");
+            System.out.print(" 4.DISPLAY PERSON DETAILS ");
+            System.out.println(" 0.EXIT ");
+            System.out.print("->");
+            int choice = sc.nextInt();
+            sc.nextLine();
+            switch (choice) {
+                case 1:
+                    addContact();
+                    break;
+                case 2:
+                    editAddressBook();
+                    break;
+                case 3:
+                    deleteContact();
+                    break;
+                case 4:
+                    displayContact();
+                    break;
+                case 0:
+                    exit = false;
+                    break;
+                default:
+                    System.out.println("Invalid");
+                    break;
+            }
+            writeFileIO();
+            try {
+                writeCSV();
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     void displayAddressBook() {
@@ -159,10 +220,6 @@ public class AddressBook {
     }
 
     void editAddressBook() {
-//        for(Map.Entry<String, ArrayList<PersonInfo>> entry : map.entrySet()){
-//           String key = entry.getKey();
-//            list = map.get(key);
-//            editContact();
         flag = 0;
         System.out.println("Enter First Name to update : ");
         String editName = sc.nextLine();
@@ -172,10 +229,13 @@ public class AddressBook {
         }
         if (flag == 0) {
             System.out.println("Record Not Found");
-
         }
     }
 
+    public boolean duplicateCheck(String name) {
+        PersonInfo check = list.stream().filter(i -> name.equals(i.getFirstName() + i.getLastName())).findFirst().orElse(null);
+        return check != null;
+    }
 
     public void searchCity() {
         System.out.println("Enter City Name To Search Function : ");
@@ -185,7 +245,7 @@ public class AddressBook {
                 .collect(Collectors.toList()).stream()
                 .forEach(i -> System.out.println(i.toString())));
         flag++;
-        System.out.println("NumberOfPersonsInCity->"+"["+flag+"]");
+        System.out.println("NumberOfPersonsInCity->" + "[" + flag + "]");
     }
 
     public void searchState() {
@@ -196,9 +256,10 @@ public class AddressBook {
                 .collect(Collectors.toList())
                 .forEach(i -> System.out.println(i.toString())));
         flag++;
-        System.out.println("NumberOfPersonsInState->"+"["+flag+"]");
+        System.out.println("NumberOfPersonsInState->" + "[" + flag + "]");
 
     }
+
     public void viewByCity() {
         maps = new HashMap<>();
         for (String y : map.keySet()) {
@@ -209,7 +270,7 @@ public class AddressBook {
                 maps.merge(key, value, (city, person) -> Stream.concat(city.stream(), person.stream()).toList());
             }
         }
-        maps.forEach(((key, value) -> System.out.println("NumberOfPersonInCity"+"-->>"+ value.size()+"{" + key.toUpperCase() + "}" + "->" + value + "<-")));
+        maps.forEach(((key, value) -> System.out.println("NumberOfPersonInCity" + "-->>" + value.size() + "{" + key.toUpperCase() + "}" + "->" + value + "<-")));
     }
 
     public void viewByState() {
@@ -222,19 +283,36 @@ public class AddressBook {
                 maps.merge(key, value, (state, person) -> Stream.concat(state.stream(), person.stream()).toList());
             }
         }
-        maps.forEach(((key, value) -> System.out.println("NumberOfPersonInState"+"-->>"+ value.size()+"{" + key.toUpperCase() + "}" + "->" + value + "<-")));
+        maps.forEach(((key, value) -> System.out.println("NumberOfPersonInState" + "-->>" + value.size() + "{" + key.toUpperCase() + "}" + "->" + value + "<-")));
     }
 
     public void countByCity() {
         countMap = new HashMap<>();
         map.keySet().stream().flatMap(y -> map.get(y).stream()
-                .collect(groupingBy(PersonInfo::getCity,counting())).entrySet().stream()).forEach(entry -> {
+                .collect(groupingBy(PersonInfo::getCity, counting())).entrySet().stream()).forEach(entry -> {
             String key = entry.getKey();
             Long value = entry.getValue();
-            countMap.merge(key, value,Long::sum);
+            countMap.merge(key, value, Long::sum);
         });
         countMap.forEach(((key, value) -> System.out.println("{" + key.toUpperCase() + "}" + "->" + value + "<-")));
     }
+
+    public void sortByPersonName() {
+        list.stream()
+                .sorted(Comparator.comparing((PersonInfo contact) -> contact.getFirstName()))
+                .forEach(System.out::println);
+    }
+
+    public void sortByPersonNameInBooks() {
+        viewMap = new HashMap<>();
+        map.keySet().forEach(i -> map.get(i).stream().collect(groupingBy(PersonInfo::getFirstName))
+                .forEach((key, value) -> viewMap.merge(key.toUpperCase(), value, (firstName, details) -> {
+                    firstName.addAll(details);
+                    return firstName;
+                })));
+        viewMap.entrySet().stream().sorted(Map.Entry.comparingByKey()).forEach(System.out::println);
+
+    }
+
 }
-
-
+  
