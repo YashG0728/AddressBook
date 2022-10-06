@@ -1,7 +1,3 @@
-package AddressBook;
-
-import java.util.*;
-
 class PersonInfo {
     public String firstName, lastName, address, city, state, emailID, zip, phoneNumber;
 

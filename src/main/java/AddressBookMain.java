@@ -1,6 +1,4 @@
-package AddressBook;
-import java.sql.SQLOutput;
-import java.util.*;
+import java.util.Scanner;
 
 public class AddressBookMain {
 
@@ -56,20 +54,26 @@ public class AddressBookMain {
                 case 9: //Count by city
                     addressBook.countByCity();
                     break;
-                case 10: //Sort by person name
-                    addressBook.sortByPersonName();
-                    break;
-                case 11: //Sort by city
+                case 10: //Sort by city
                     addressBook.sortByCity();
                     break;
-                case 12: //Sort person by name in multiple address book
+                case 11: //Sort person by name in multiple address book
                     addressBook.sortByPersonNameInBooks();
                     break;
-                case 13: //Read data from File IO
+                case 12: //Read data from File IO
                     addressBook.ReadFileIO();
                     break;
-                case 14: //Read data from csv
+                case 13: //Read data from csv
                     addressBook.readCSV();
+                    break;
+                case 14: //Read data from csv
+                    addressBook.writeAddressBookJson();
+                    break;
+                case 15:
+                    addressBook.readAddressBookJson();
+                    break;
+                case 16:
+                    addressBook.retrieveData();
                     break;
                 case 0:
                     exit = false;
